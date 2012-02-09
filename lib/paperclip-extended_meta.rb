@@ -17,6 +17,7 @@ module Paperclip
           geo = Geometry.from_file(file)
           meta[style][:width]   = geo.width.to_i
           meta[style][:height]  = geo.height.to_i
+        rescue NotIdentifiedByImageMagickError
         end
         
         meta[style][:size]    = File.size(file)
