@@ -14,10 +14,12 @@ module Paperclip
       expand_queued(@queued_for_write).each do |style, file|
         meta[style] = {}
         if style == :original
-          geo = Geometry.from_file(file)
-          meta[style][:width]   = geo.width.to_i
-          meta[style][:height]  = geo.height.to_i
-        rescue NotIdentifiedByImageMagickError
+          begin
+            geo = Geometry.from_file(file)
+            meta[style][:width]   = geo.width.to_i
+            meta[style][:height]  = geo.height.to_i
+          rescue NotIdentifiedByImageMagickError
+          end
         end
         
         meta[style][:size]    = File.size(file)
