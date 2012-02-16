@@ -21,10 +21,15 @@ module Paperclip
           rescue NotIdentifiedByImageMagickError
           end
         end
-        
         meta[style][:size]    = File.size(file)
       end
-      instance_write(:meta, meta)
+      instance_merge(:meta, meta)
+    end
+
+    # Updates the attachment specific attributes via merge with previous ones
+    # needed to update the meta-hash without loosing old information (after partial reprocess)
+    def instance_merge(attr, value)
+      instance_write(attr, (instance_read(attr) || {}).merge(value))
     end
 
   end
